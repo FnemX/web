@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FnemX | 产品介绍</title>
+    <style>
+        /* 全局样式重置与基础设置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #34bed4, #8c52ff);
+            --accent-color: #ff6b6b;
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --bg-dark: rgba(10, 15, 30, 0.95);
+            --glass-effect: rgba(255, 255, 255, 0.05);
+            --card-bg: rgba(20, 25, 40, 0.7);
+            --card-hover: rgba(25, 30, 45, 0.9);
+        }
+
+        body {
+            font-family: 'Poppins', 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, rgba(10, 15, 30, 0.95), rgba(15, 20, 40, 0.98)), 
+                        url('../bj/1.jpg') center/cover fixed no-repeat;
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-top: 100px;
+        }
+
+        /* 背景网格效果 */
+        .background-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--glass-effect);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar.scrolled {
+            padding: 15px 50px;
+            background: var(--bg-dark);
+        }
+
+        .navbar-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-logo span {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #34bed4;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: #34bed4;
+        }
+
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* 主容器样式 */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px 100px;
+        }
+
+        /* 页面标题 */
+        .page-title {
+            text-align: center;
+            margin-bottom: 70px;
+            position: relative;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .page-title h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-title h1::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+        }
+
+        .page-title p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 30px auto 0;
+            line-height: 1.8;
+        }
+
+        /* 产品卡片容器 */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        /* 产品卡片样式 */
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transform: translateY(0);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .product-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .product-card:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .product-card:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+
+        .product-card:hover {
+            background: var(--card-hover);
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, rgba(52, 190, 212, 0.3), rgba(139, 82, 255, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(52, 190, 212, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(139, 82, 255, 0.1) 0%, transparent 50%);
+        }
+
+        .product-icon {
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.8);
+            filter: drop-shadow(0 5px 15px rgba(52, 190, 212, 0.3));
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover .product-icon {
+            transform: scale(1.1);
+            filter: drop-shadow(0 10px 25px rgba(52, 190, 212, 0.5));
+        }
+
+        .product-content {
+            padding: 30px;
+        }
+
+        .product-title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+            position: relative;
+            display: inline-block;
+        }
+
+        .product-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .product-card:hover .product-title::after {
+            width: 60px;
+        }
+
+        .product-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 25px;
+            font-size: 1rem;
+        }
+
+        .product-specs {
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .spec-icon {
+            color: #34bed4;
+            font-size: 1.2rem;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+        }
+
+        .product-price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+
+        /* 按钮样式 */
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 10px 25px rgba(52, 190, 212, 0.2);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(52, 190, 212, 0.9), rgba(108, 92, 231, 0.9));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(52, 190, 212, 0.4);
+        }
+
+        .btn-primary:hover::before {
+            opacity: 1;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #34bed4;
+            border: 2px solid #34bed4;
+            margin-left: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: #34bed4;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(52, 190, 212, 0.3);
+        }
+
+        /* 粒子效果背景 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            opacity: 0.2;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-20px) translateX(10px);
+            }
+            50% {
+                transform: translateY(10px) translateX(-10px);
+            }
+            75% {
+                transform: translateY(-10px) translateX(20px);
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .navbar {
+                padding: 20px 30px;
+            }
+            
+            .nav-links {
+                gap: 25px;
+            }
+            
+            .page-title h1 {
+                font-size: 3rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 80px;
+            }
+            
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--bg-dark);
+                flex-direction: column;
+                gap: 0;
+                padding: 20px 0;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links a {
+                padding: 15px 40px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .page-title h1 {
+                font-size: 2.5rem;
+            }
+            
+            .container {
+                padding: 40px 20px 80px;
+            }
+            
+            .product-card {
+                margin-bottom: 30px;
+            }
+            
+            .product-specs {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                display: block;
+                width: 100%;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+            
+            .btn-secondary {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-logo {
+                font-size: 1.5rem;
+            }
+            
+            .page-title h1 {
+                font-size: 2rem;
+            }
+            
+            .page-title p {
+                font-size: 1rem;
+            }
+            
+            .product-content {
+                padding: 20px;
+            }
+            
+            .product-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景网格 -->
+    <div class="background-grid"></div>
+    
+    <!-- 粒子效果 -->
+    <div class="particles"></div>
+    
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <a href="../index.html" class="navbar-logo">Fnem<span>X</span></a>
+        <div class="nav-links">
+            <a href="../index.html">首页</a>
+            <a href="../cp/index.html" class="active">产品</a>
+            <a href="../jc/index.html">关于我们</a>
+            <a href="../jc/index.html">联系我们</a>
+        </div>
+        <button class="mobile-menu-btn">菜单</button>
+    </nav>
+    
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 页面标题 -->
+        <div class="page-title">
+            <h1>我们的产品</h1>
+            <p>FnemX 提供业界领先的创新科技产品，结合人工智能、大数据和物联网技术，为您的业务赋能，开启智能未来。</p>
+        </div>
+        
+        <!-- 产品卡片网格 -->
+        <div class="products-grid">
+            <!-- 产品卡片 1 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <div class="product-icon">⚡</div>
+                </div>
+                <div class="product-content">
+                    <h2 class="product-title">Forwi</h2>
+                    <p class="product-description">这是一个基于Python和Tkinter开发的图形化网络端口管理工具，允许用户查看、管理和监控系统中的网络端口连接。</p>
+                    <div class="product-specs">
+                        <a href="https://github.com/FnemX/Forwi" target="_blank" class="btn btn-secondary">了解更多</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 产品卡片 2 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <div class="product-icon">🔮</div>
+                </div>
+                <div class="product-content">
+                    <h2 class="product-title">Quantum 预测平台</h2>
+                    <p class="product-description">Quantum 预测平台融合先进的机器学习算法，能够预测市场趋势、客户行为和业务风险，帮助企业提前规划战略。</p>
+                    <div class="product-specs">
+                        <div class="spec-item">
+                            <div class="spec-icon">✓</div>
+                            <span>预测分析引擎</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">✓</div>
+                            <span>多维度分析</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">✓</div>
+                            <span>可视化仪表盘</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">✓</div>
+                            <span>API 集成</span>
+                        </div>
+                    </div>
+                    <div class="product-price">¥29,999 <span>/年</span></div>
+                    <div>
+                        <a href="#" class="btn btn-primary">立即购买</a>
+                        <a href="#" class="btn btn-secondary">了解更多</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 产品卡片 3 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <div class="product-icon">🛡️</div>
+                </div>
+                <div class="product-content">
+                    <h2 class="product-title">Photon 安全套件</h2>
+                    <p class="product-description">Photon 安全套件提供全方位的网络安全解决方案，包括威胁检测、漏洞扫描和数据加密，保护企业数据资产安全。</p>
+                    <div class="product-specs">
+                        <div class="spec-item">
+                            <div class="spec-icon">✓</div>
+                            <span>实时威胁监控</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">✓</div>
+                            <span>智能防护系统</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">✓</div>
+                            <span>漏洞评估</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">✓</div>
+                            <span>24/7 技术支持</span>
+                        </div>
+                    </div>
+                    <div class="product-price">¥14,999 <span>/年</span></div>
+                    <div>
+                        <a href="#" class="btn btn-primary">立即购买</a>
+                        <a href="#" class="btn btn-secondary">了解更多</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 产品卡片 4 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <div class="product-icon">🌐</div>
+                </div>
+                <div class="product-content">
+                    <h2 class="product-title">Aether 云服务平台</h2>
+                    <p class="product-description">Aether 云服务平台提供高性能、高可用的云计算资源，支持弹性扩展，为企业应用提供稳定可靠的运行环境。</p>
+                    <div class="product-specs">
+                        <div class="spec-item">
+                            <div class="spec-icon">✓</div>
+                            <span>弹性计算资源</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">✓</div>
+                            <span>全球数据中心</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">✓</div>
+                            <span>自动备份</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">✓</div>
+                            <span>按需付费</span>
+                        </div>
+                    </div>
+                    <div class="product-price">¥9,999 <span>/年起</span></div>
+                    <div>
+                        <a href="#" class="btn btn-primary">立即购买</a>
+                        <a href="#" class="btn btn-secondary">了解更多</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 粒子效果生成
+            function createParticles() {
+                const particlesContainer = document.querySelector('.particles');
+                for (let i = 0; i < 40; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    // 随机大小
+                    const size = Math.random() * 10 + 2;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    
+                    // 随机位置
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.top = `${Math.random() * 100}%`;
+                    
+                    // 随机动画延迟和持续时间
+                    particle.style.animationDelay = `${Math.random() * 5}s`;
+                    particle.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                    
+                    particlesContainer.appendChild(particle);
+                }
+            }
+            
+            // 初始化粒子
+            createParticles();
+            
+            // 导航栏滚动效果
+            const navbar = document.querySelector('.navbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+            
+            // 移动端菜单切换
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+            
+            // 为导航链接添加点击事件
+            const navItems = document.querySelectorAll('.nav-links a');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // 关闭移动端菜单
+                    navLinks.classList.remove('active');
+                });
+            });
+            
+            // 产品卡片动画效果
+            const productCards = document.querySelectorAll('.product-card');
+            
+            // 滚动监听，为进入视口的元素添加动画
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            productCards.forEach(card => {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(30px)';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

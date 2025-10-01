@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+        }
+
+        body {
+            line-height: 1.8;
+            color: #495057;
+            background-color: #f8f9fa;
+            padding: 20px 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.8rem;
+            padding-bottom: 15px;
+            background: linear-gradient(90deg, rgba(52, 152, 219, 0.1), transparent);
+            border-radius: 4px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 8px;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background-color: #2980b9;
+        }
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background: linear-gradient(to bottom, #3498db, #2980b9);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+            border-radius: 4px;
+        }
+
+        .timeline-item {
+            padding: 15px 45px;
+            position: relative;
+            width: 50%;
+            margin-bottom: 30px;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -12px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border: 3px solid white;
+            top: 20px;
+            border-radius: 50%;
+            z-index: 1;
+            box-shadow: 0 0 0 2px #3498db;
+        }
+
+        .left {
+            left: 0;
+        }
+
+        .right {
+            left: 50%;
+        }
+
+        .left::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 25px;
+            width: 0;
+            z-index: 1;
+            right: 30px;
+            border: medium solid white;
+            border-width: 12px 0 12px 12px;
+            border-color: transparent transparent transparent #f8f9fa;
+        }
+
+        .right::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 25px;
+            width: 0;
+            z-index: 1;
+            left: 30px;
+            border: medium solid white;
+            border-width: 12px 12px 12px 0;
+            border-color: transparent #f8f9fa transparent transparent;
+        }
+
+        .right::after {
+            left: -8px;
+        }
+
+        .timeline-content {
+            padding: 25px 35px;
+            background-color: #f8f9fa;
+            position: relative;
+            border-radius: 8px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-3px);
+        }
+
+        .timeline-content h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 30px;
+            border-radius: 12px;
+            background-color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #e9ecef;
+        }
+
+        .team-member:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .team-member img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 4px solid #e9ecef;
+            transition: border-color 0.3s;
+        }
+
+        .team-member:hover img {
+            border-color: #3498db;
+        }
+
+        .team-member h3 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .team-member p:first-of-type {
+            color: #3498db;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .contact-item {
+            flex: 1;
+            min-width: 280px;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .contact-item h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 8px;
+        }
+
+        .mission {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .mission h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .mission p {
+            margin-bottom: 20px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+
+            .timeline::after {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 80px;
+                padding-right: 25px;
+            }
+
+            .timeline-item::before {
+                left: 65px;
+                border: medium solid white;
+                border-width: 12px 12px 12px 0;
+                border-color: transparent #f8f9fa transparent transparent;
+            }
+
+            .left::after, .right::after {
+                left: 22px;
+            }
+
+            .right {
+                left: 0%;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            h2 {
+                font-size: 1.7rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .team-member {
+                padding: 20px;
+            }
+
+            .team-member img {
+                width: 150px;
+                height: 150px;
+            }
+
+            .contact-item {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav style="background-color: #3498db; padding: 15px; margin-bottom: 20px;">
+    <ul style="display: flex; justify-content: space-around; align-items: center; list-style: none; gap: 30px; max-width: 1200px; margin: 0 auto;">
+        <a href="../index.html" class="navbar-logo" style="color: white; font-size: 1.8rem; font-weight: bold; text-decoration: none; transition: color 0.3s;">Fnem<span style="color: #ffc107;">X</span></a>
+        <div class="nav-links" style="display: flex; gap: 25px;">
+            <a href="../index.html" style="color: white; text-decoration: none; font-size: 1.1rem; padding: 8px 12px; border-radius: 6px; transition: all 0.3s;">首页</a>
+            <a href="../cp/index.html" style="color: white; text-decoration: none; font-size: 1.1rem; padding: 8px 12px; border-radius: 6px; transition: all 0.3s;">产品</a>
+            <a href="../jc/index.html" style="color: white; text-decoration: none; font-size: 1.1rem; padding: 8px 12px; border-radius: 6px; transition: all 0.3s;">关于我们</a>
+            <a href="../jc/index.html" style="color: white; text-decoration: none; font-size: 1.1rem; padding: 8px 12px; border-radius: 6px; transition: all 0.3s;">联系我们</a>
+        </div>
+        <button class="mobile-menu-btn" style="background-color: transparent; color: white; border: 2px solid white; padding: 8px 16px; border-radius: 6px; font-size: 1.1rem; cursor: pointer; transition: all 0.3s;">菜单</button>
+    </ul>
+</nav>
+    <div class="container">
+        <h1>关于我们</h1>
+
+        <!-- 企业简介 -->
+        <section>
+            <h2>团队简介</h2>
+            <p>我们是一个程序开发团队</p>
+        </section>
+
+        <!-- 发展历程 -->
+        <section>
+            <h2>发展历程</h2>
+            <div class="timeline">
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>2025 年</h3>
+                        <p>团队正式成立，开启创业之旅。</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3>2025 年</h3>
+                        <p>推出第一款核心产品，获得市场高度认可。</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>20XX 年</h3>
+                        <p>完成 A 轮融资，扩大业务规模。</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3>20XX 年</h3>
+                        <p>业务拓展至海外市场，建立国际合作关系。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心团队 -->
+        <section>
+            <h2>核心团队</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <h3>南极Bear</h3>
+                    <p>创始人 & CEO</p>
+                    <p>拥有多年程序编写经验</p>
+                </div>
+                <div class="team-member">
+                    <h3>A_YW</h3>
+                    <p>CTO</p>
+                    <p>提供大力支持</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 使命愿景价值观 -->
+        <section>
+            <h2>使命愿景价值观</h2>
+            <div class="mission">
+                <h3>使命</h3>
+                <p>我们的使命是通过创新的产品和服务，为客户创造价值，推动行业进步。</p>
+                <h3>愿景</h3>
+                <p>成为行业内领先的企业，为全球用户提供优质的解决方案。</p>
+                <h3>价值观</h3>
+                <p>诚信、创新、合作、共赢。</p>
+            </div>
+        </section>
+
+        <!-- 联系方式 -->
+        <section>
+            <h2>联系方式</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h3>地址</h3>
+                    <p>暂无</p>
+                </div>
+                <div class="contact-item">
+                    <h3>电话</h3>
+                    <p>暂无</p>
+                </div>
+                <div class="contact-item">
+                    <h3>邮箱</h3>
+                    <p>785971038@qq.com</p>
+                    <a href="mailto:785971038@qq.com" style="color: #ffc107; text-decoration: none;">发送邮件</a>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

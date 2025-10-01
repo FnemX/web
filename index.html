@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FnemX | 主页</title>
+    <style>
+        /* 全局样式重置与基础设置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #34bed4, #8c52ff);
+            --accent-color: #ff6b6b;
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --bg-dark: rgba(10, 15, 30, 0.95);
+            --glass-effect: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            font-family: 'Poppins', 'Noto Sans SC', sans-serif;
+            overflow: hidden;
+            color: var(--text-primary);
+        }
+
+        /* 背景网格效果 */
+        .background-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+        }
+
+        /* 设置幻灯片容器样式 */
+        .slides-container {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 幻灯片内容容器 */
+        .slide-content {
+            text-align: center;
+            max-width: 900px;
+            padding: 20px;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        /* 第一张幻灯片背景 */
+        .slide:nth-child(1) {
+            background: linear-gradient(rgba(10, 15, 30, 0.7), rgba(10, 15, 30, 0.85)), url('bj/1.jpg') center/cover no-repeat;
+            color: white;
+        }
+
+        /* 第二张幻灯片背景 */
+        .slide:nth-child(2) {
+            background: linear-gradient(135deg, rgba(52, 190, 212, 0.9), rgba(108, 92, 231, 0.9));
+            color: white;
+        }
+
+        /* 第三张幻灯片 */
+        .slide:nth-child(3) {
+            background: linear-gradient(rgba(10, 15, 30, 0.8), rgba(10, 15, 30, 0.95));
+            color: white;
+        }
+
+        /* 标题样式 */
+        .slide h1 {
+            font-size: 4.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            display: inline-block;
+        }
+
+        .slide h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 3px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+        }
+
+        .slide h2 {
+            font-size: 3rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .slide p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 10px 30px rgba(52, 190, 212, 0.3);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(52, 190, 212, 0.9), rgba(108, 92, 231, 0.9));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(52, 190, 212, 0.4);
+        }
+
+        .btn-primary:hover::before {
+            opacity: 1;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            margin-left: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #34bed4;
+            transform: translateY(-3px);
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--glass-effect);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .navbar.scrolled {
+            padding: 15px 50px;
+            background: var(--bg-dark);
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-logo span {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #34bed4;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* 幻灯片指示器 */
+        .slide-indicators {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .indicator::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+
+        .indicator.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.3);
+        }
+
+        .indicator.active::before {
+            transform: scaleX(1);
+        }
+
+        /* 动画效果 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .pulse-animation {
+            animation: pulse 4s infinite;
+        }
+
+        /* 粒子效果背景 */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            opacity: 0.3;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-20px) translateX(10px);
+            }
+            50% {
+                transform: translateY(10px) translateX(-10px);
+            }
+            75% {
+                transform: translateY(-10px) translateX(20px);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .slide h1 {
+                font-size: 3.5rem;
+            }
+            
+            .slide h2 {
+                font-size: 2.5rem;
+            }
+            
+            .navbar {
+                padding: 20px 30px;
+            }
+            
+            .nav-links {
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--bg-dark);
+                flex-direction: column;
+                gap: 0;
+                padding: 20px 0;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links a {
+                padding: 15px 40px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .slide h1 {
+                font-size: 2.8rem;
+            }
+            
+            .slide h2 {
+                font-size: 2rem;
+            }
+            
+            .slide p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .slide h1 {
+                font-size: 2.2rem;
+            }
+            
+            .slide h2 {
+                font-size: 1.8rem;
+            }
+            
+            .navbar-logo {
+                font-size: 1.5rem;
+            }
+            
+            .slide-indicators {
+                bottom: 20px;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景网格 -->
+    <div class="background-grid"></div>
+    
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-logo">Fnem<span>X</span></a>
+        <div class="nav-links">
+            <a href="index.html" class="active">首页</a>
+            <a href="/cp/index.html">产品</a>
+            <a href="/jc/index.html">关于我们</a>
+            <a href="/jc/index.html">联系我们</a>
+        </div>
+        <button class="mobile-menu-btn" style="background-color: transparent; color: white; border: 2px solid white; padding: 8px 16px; border-radius: 6px; font-size: 1.1rem; cursor: pointer; transition: all 0.3s;">菜单</button>
+    </nav>
+    
+    <!-- 幻灯片指示器 -->
+    <div class="slide-indicators">
+        <!-- 指示器将通过 JavaScript 动态生成 -->
+    </div>
+    
+    <!-- 幻灯片容器 -->
+    <div class="slides-container">
+        <!-- 第一张幻灯片 -->
+        <div class="slide active">
+            <div class="particles"></div>
+            <div class="slide-content">
+                <h1 class="pulse-animation">欢迎来到 FnemX</h1>
+                <p>我们致力于打造未来科技体验，通过创新的解决方案，为您提供无与伦比的产品和服务。探索无限可能，引领科技潮流。</p>
+                <div>
+                    <a href="/cp/index.html" class="btn btn-primary">探索产品</a>
+                    <a href="/jc/index.html" class="btn btn-secondary">了解更多</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 第二张幻灯片 -->
+        <div class="slide">
+            <div class="particles"></div>
+            <div class="slide-content">
+                <h2>创新科技，改变未来</h2>
+                <p>FnemX 专注于前沿技术研发，将人工智能、大数据和物联网完美融合，为各个行业提供量身定制的解决方案。我们的服务器是世界上最先进的，为您的业务提供最高级别的性能和安全性。</p>
+                <a href="#" class="btn btn-primary">探索我们的技术</a>
+            </div>
+        </div>
+        
+        <!-- 第三张幻灯片 -->
+        <div class="slide">
+            <div class="particles"></div>
+            <div class="slide-content">
+                <h2>与我们共创未来</h2>
+                <p>加入 FnemX 创新社区，与全球顶尖开发者和设计师一起，构建下一代技术生态系统。</p>
+                <a href="#" class="btn btn-primary">联系我们</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 粒子效果生成
+            function createParticles() {
+                const particlesContainer = document.querySelectorAll('.particles');
+                particlesContainer.forEach(container => {
+                    for (let i = 0; i < 30; i++) {
+                        const particle = document.createElement('div');
+                        particle.classList.add('particle');
+                        
+                        // 随机大小
+                        const size = Math.random() * 8 + 2;
+                        particle.style.width = `${size}px`;
+                        particle.style.height = `${size}px`;
+                        
+                        // 随机位置
+                        particle.style.left = `${Math.random() * 100}%`;
+                        particle.style.top = `${Math.random() * 100}%`;
+                        
+                        // 随机动画延迟和持续时间
+                        particle.style.animationDelay = `${Math.random() * 5}s`;
+                        particle.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                        
+                        container.appendChild(particle);
+                    }
+                });
+            }
+            
+            // 初始化粒子
+            createParticles();
+            
+            // 导航栏滚动效果
+            const navbar = document.querySelector('.navbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+            
+            // 移动端菜单切换
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+            
+            // 幻灯片功能
+            const slides = document.querySelectorAll('.slide');
+            const indicatorsContainer = document.querySelector('.slide-indicators');
+            let currentIndex = 0;
+            let lastScrollTime = 0;
+            const scrollDelay = 800; // 滚动间隔时间，避免频繁切换
+            let slideInterval;
+            
+            // 生成指示器
+            slides.forEach((_, index) => {
+                const indicator = document.createElement('div');
+                indicator.classList.add('indicator');
+                if (index === currentIndex) {
+                    indicator.classList.add('active');
+                }
+                indicator.addEventListener('click', () => {
+                    goToSlide(index);
+                    resetSlideInterval();
+                });
+                indicatorsContainer.appendChild(indicator);
+            });
+            
+            function goToSlide(index) {
+                // 移除所有幻灯片的active类
+                slides.forEach(slide => slide.classList.remove('active'));
+                
+                // 添加当前幻灯片的active类
+                slides[index].classList.add('active');
+                
+                // 更新当前索引
+                currentIndex = index;
+                
+                // 更新指示器
+                updateIndicators();
+            }
+            
+            function updateIndicators() {
+                const indicators = document.querySelectorAll('.indicator');
+                indicators.forEach((indicator, index) => {
+                    if (index === currentIndex) {
+                        indicator.classList.add('active');
+                    } else {
+                        indicator.classList.remove('active');
+                    }
+                });
+            }
+            
+            function handleScroll(event) {
+                const now = Date.now();
+                if (now - lastScrollTime < scrollDelay) return;
+                lastScrollTime = now;
+                
+                // 停止自动播放
+                clearInterval(slideInterval);
+                
+                if (event.deltaY > 0) {
+                    // 向下滚动，显示下一张幻灯片
+                    currentIndex = (currentIndex + 1) % slides.length;
+                } else {
+                    // 向上滚动，显示上一张幻灯片
+                    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                }
+                
+                goToSlide(currentIndex);
+                
+                // 重新开始自动播放
+                startSlideInterval();
+            }
+            
+            // 自动轮播
+            function startSlideInterval() {
+                slideInterval = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % slides.length;
+                    goToSlide(currentIndex);
+                }, 6000); // 每6秒切换一次
+            }
+            
+            function resetSlideInterval() {
+                clearInterval(slideInterval);
+                startSlideInterval();
+            }
+            
+            // 添加鼠标滚轮事件监听
+            document.addEventListener('wheel', handleScroll);
+            
+            // 触摸滑动支持
+            let touchStartY = 0;
+            let touchEndY = 0;
+            
+            document.addEventListener('touchstart', (e) => {
+                touchStartY = e.changedTouches[0].screenY;
+            });
+            
+            document.addEventListener('touchend', (e) => {
+                touchEndY = e.changedTouches[0].screenY;
+                handleTouch();
+            });
+            
+            function handleTouch() {
+                const touchDiff = touchStartY - touchEndY;
+                const minSwipeDistance = 50;
+                
+                if (Math.abs(touchDiff) > minSwipeDistance) {
+                    clearInterval(slideInterval);
+                    
+                    if (touchDiff > 0) {
+                        // 向上滑动，显示下一张幻灯片
+                        currentIndex = (currentIndex + 1) % slides.length;
+                    } else {
+                        // 向下滑动，显示上一张幻灯片
+                        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                    }
+                    
+                    goToSlide(currentIndex);
+                    startSlideInterval();
+                }
+            }
+            
+            // 开始自动轮播
+            startSlideInterval();
+        });
+    </script>
+</body>
+</html>
